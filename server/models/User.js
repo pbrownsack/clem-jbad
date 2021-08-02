@@ -26,8 +26,8 @@ User.generateHash = async (password) => {
     return await bcrypt.hash(password, salt);
 }
 
-User.verifyPassword = async (user, password) => {
-    return await bcrypt.compare(password, user.hash);
+User.verifyPassword = async (hash, password) => {
+    return await bcrypt.compare(password, hash);
 }
 
 module.exports = User;
