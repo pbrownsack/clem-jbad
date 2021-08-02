@@ -1,4 +1,5 @@
 const sql = require("../mysql");
+const bcrypt = require("bcrypt");
 
 const User = {};
 
@@ -20,9 +21,13 @@ User.createNew = (fields) => new Promise((resolve, reject) => {
 
 })
 
-User.verifyPassword = (user, password) => {
-    const { salt, hash } = user;
-    
+User.generateHash = async (password) => {
+    const salt = await bcrypt.genSalt(10);
+    return await bcrypt.hash(password, salt);
+}
+
+User.verifyPassword = async (user, password) => {
+    return await bcrypt.compare(password, user.hash);
 }
 
 module.exports = User;

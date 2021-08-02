@@ -47,7 +47,7 @@ passport.use(new LocalStrategy(async (username, password, done) => {
             return done(null, false, { error: "User does not exist!" });
         }
 
-        const verified = User.verifyPassword(user, password);
+        const verified = await User.verifyPassword(user, password);
 
         if (!verified) {
             return done(null, false, { error: "Incorrect password!" });
