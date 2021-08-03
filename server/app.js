@@ -39,7 +39,6 @@ passport.deserializeUser(async (id, done) => {
 })
 
 passport.use(new LocalStrategy(async (username, password, done) => {
-    // TODO: Find user by username and verify password
     try {
         const user = await User.find(username);
 
