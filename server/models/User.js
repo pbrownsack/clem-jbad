@@ -17,8 +17,32 @@ User.find = (username) => new Promise((resolve, reject) => {
     })
 })
 
-User.createNew = (fields) => new Promise((resolve, reject) => {
+User.createNew = (fields) => new Promise(async (resolve, reject) => {
+    const password = await User.generateHash(fields.password);
 
+    const newUser = {
+        username: fields.username,
+        hash: password,
+        first_name: fields.first_name,
+        last_name: fields.last_name,
+        admin: 0,
+        hourly_pay: fields.hourly_pay || null,
+        hire_date: fields.hire_date || null
+    }
+
+    // TODO: Remove 'salt' column from database
+
+    sql.query("INSERT INTO users SET ?", newUser, (err, result) => {
+        if (err) return reject(err.code);
+        resolve(result);
+    })
+})
+
+User.remove = (id) => new Promise((resolve, reject) => {
+    sql.query("DELETE FROM users WHERE id = ?", [id], (err, result) => {
+        if (err) return reject(err.code);
+        resolve(result);
+    })
 })
 
 User.generateHash = async (password) => {
