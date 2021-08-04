@@ -8,6 +8,11 @@ const conn = mysql.createConnection({
     database: dbConfig.database
 });
 
+conn.on("error", err => {
+    console.log("[CLEM] Fatal MySQL error: " + err.code);
+    throw err;
+})
+
 conn.connect(err => {
     if (err) throw err;
     console.log("[CLEM] Connected to MySQL successfully");
