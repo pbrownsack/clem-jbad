@@ -3,6 +3,13 @@ const bcrypt = require("bcrypt");
 
 const User = {};
 
+User.getAll = () => new Promise((resolve, reject) => {
+    sql.query("SELECT * FROM users", (err, results) => {
+        if (err) return reject(err.code);
+        resolve(results);
+    })
+})
+
 User.findById = (id) => new Promise((resolve, reject) => {
     sql.query("SELECT * FROM users WHERE id = ?", [id], (err, results) => {
         if (err) return reject(err.code);
@@ -30,9 +37,18 @@ User.createNew = (fields) => new Promise(async (resolve, reject) => {
         hire_date: fields.hire_date || null
     }
 
-    // TODO: Remove 'salt' column from database
+    // TODO: Add existing user check
 
     sql.query("INSERT INTO users SET ?", newUser, (err, result) => {
+        if (err) return reject(err.code);
+        resolve(result);
+    })
+})
+
+User.changePassword = (id, newPassword) => new Promise(async (resolve, reject) => {
+    const hash = await User.generateHash(newPassword);
+
+    sql.query("UPDATE users SET hash = ? WHERE id = ?", [hash, id], (err, result) => {
         if (err) return reject(err.code);
         resolve(result);
     })
