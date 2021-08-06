@@ -1,0 +1,24 @@
+--------------------------
+FRONT-END URL LOCATIONS
+--------------------------
+
+/users/{username}
+    *ADMIN* Shows user information
+
+/users/login
+
+/users/new
+
+/customers/{customer_id}
+
+/customers/new
+
+/projects?customer={customer_id}
+
+/projects/new
+
+/hours/user?id={user_id}
+
+/hours/project?id={customer_id}
+
+/hours/customer?id={customer_id}
