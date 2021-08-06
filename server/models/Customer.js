@@ -10,7 +10,7 @@ Customer.findById = (id) => new Promise((resolve, reject) => {
 })
 
 Customer.createNew = (fields) => new Promise((resolve, reject) => {
-    sql.query("INSERT INTO customers (first_name, last_name, address, city, state, zip, date_added) VALUES (?, ?, ?, ?, ?, ?, CURRENT_DATE())", [
+    sql.query("INSERT INTO customers (first_name, last_name, address, city, state, zip, date_added) VALUES (?, ?, ?, ?, ?, ?, curdate())", [
         fields.first_name,
         fields.last_name,
         fields.address || null,
