@@ -12,7 +12,7 @@ router.use("/customers", custRoute);
 router.use("/projects", projectsRoute);
 
 router.get("*", (req, res) => {
-    res.send({ message: "Welcome to the CLEM backend API!", version: "1.0.0" });
+    res.send({ message: "Welcome to the CLEM back-end interface!", version: "1.0.0" });
 })
 
 module.exports = router;
