@@ -27,6 +27,8 @@ User.find = (username) => new Promise((resolve, reject) => {
 User.createNew = (fields) => new Promise(async (resolve, reject) => {
     const password = await User.generateHash(fields.password);
 
+    // TODO: Add body parameter error-checking in case of front-end screwup
+
     const newUser = {
         username: fields.username,
         hash: password,
