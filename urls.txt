@@ -2,20 +2,28 @@
 FRONT-END URL LOCATIONS
 --------------------------
 
-/users/{username}
+/users
+
+/users?id={user_id}
     *ADMIN* Shows user information
+
+/users?id={user_id}&edit=true
 
 /users/login
 
 /users/new
 
-/customers/{customer_id}
+/customers
 
 /customers/new
+
+/projects
 
 /projects?customer={customer_id}
 
 /projects/new
+
+/hours
 
 /hours/user?id={user_id}
 
