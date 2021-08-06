@@ -37,25 +37,47 @@ User.createNew = (fields) => new Promise(async (resolve, reject) => {
         hire_date: fields.hire_date || null
     }
 
-    // TODO: Add existing user check
-
-    sql.query("INSERT INTO users SET ?", newUser, (err, result) => {
+    sql.query("SELECT id FROM users WHERE username = ?", [fields.username], (err, results) => {
         if (err) return reject(err.code);
-        resolve(result);
+        if (results.length > 0) return reject("User already exists!");
+
+        sql.query("INSERT INTO users SET ?", newUser, (err2, result) => {
+            if (err2) return reject(err2.code);
+            resolve(result);
+        })
     })
 })
 
 User.changePassword = (id, newPassword) => new Promise(async (resolve, reject) => {
     const hash = await User.generateHash(newPassword);
 
-    sql.query("UPDATE users SET hash = ? WHERE id = ?", [hash, id], (err, result) => {
+    sql.query("SELECT id FROM users WHERE id = ?", [id], (err, results) => {
         if (err) return reject(err.code);
-        resolve(result);
+
+        if (results.length > 0) {
+            sql.query("UPDATE users SET hash = ? WHERE id = ?", [hash, id], (err2, result) => {
+                if (err2) return reject(err2.code);
+                resolve(result);
+            })
+        } else {
+            return reject("Could not find user!");
+        }
     })
 })
 
 User.remove = (id) => new Promise((resolve, reject) => {
     sql.query("DELETE FROM users WHERE id = ?", [id], (err, result) => {
+        if (err) return reject(err.code);
+        resolve(result);
+    })
+})
+
+User.update = (fields) => new Promise((resolve, reject) => {
+    const newFields = {...fields, id: undefined, username: undefined, hash: undefined};
+
+    // TODO: Add existing user check *not important as of now*
+
+    sql.query("UPDATE users SET ? WHERE id = ?", [newFields, fields.id], (err, result) => {
         if (err) return reject(err.code);
         resolve(result);
     })

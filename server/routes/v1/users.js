@@ -1,10 +1,10 @@
 const express = require("express");
+const passport = require("passport");
 const User = require("../../models/User");
 const router = express.Router();
+const { isAuthed, isAdmin } = require("../../middleware/auth");
 
-// TODO: Add route authentication
-
-router.get("/", async (req, res) => {
+router.get("/", isAuthed, isAdmin, async (req, res) => {
     try {
         const users = await User.getAll();
         res.send(users);
@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
     }
 })
 
-router.get("/:userId", async (req, res) => {
+router.get("/:userId", isAuthed, isAdmin, async (req, res) => {
     try {
         const idUser = await User.find(req.params.userId);
         res.send(idUser);
@@ -31,7 +31,7 @@ router.get("/:userId", async (req, res) => {
     }
 })
 
-router.get("/id/:id", async (req, res) => {
+router.get("/id/:id", isAuthed, isAdmin, async (req, res) => {
     try {
         const idUser = await User.findById(req.params.id);
         res.send(idUser);
@@ -40,7 +40,29 @@ router.get("/id/:id", async (req, res) => {
     }
 })
 
-router.post("/password/change", async (req, res) => {
+router.put("/", isAuthed, isAdmin, async (req, res) => {
+    try {
+        const updUser = await User.update(req.body);
+        res.send({ message: `Successfully edited user with ID: ${req.body.id}` });
+    } catch (err) {
+        res.send({ error: err });
+    }
+})
+
+router.post("/login", passport.authenticate("local", { failureRedirect: "/v1/users/login/error" }), (req, res) => {
+    res.send({ message: "Successfully logged in!", redirect: "/hours", user: req.user });
+})
+
+router.get("/login/error", (req, res) => {
+    res.send({ error: "Failed to login! Please try another username/password combination." });
+})
+
+router.get("/logout", (req, res) => {
+    req.logout();
+    res.send({ message: "Successfully logged out!", redirect: "/" });
+})
+
+router.post("/password/change", isAuthed, async (req, res) => {
     try {
         const results = await User.changePassword(req.body.id, req.body.new_password);
         res.send({ message: "Password changed successfully!" });
