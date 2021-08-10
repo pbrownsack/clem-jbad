@@ -8,7 +8,7 @@ Project.createNew = (fields) => new Promise((resolve, reject) => {
         fields.customer_id,
         fields.description,
         null,
-        fields.price_per_ft,
+        fields.price_per_ft || null,
         null
     ], (err, result) => {
         if (err) return reject(err.code);
@@ -16,7 +16,7 @@ Project.createNew = (fields) => new Promise((resolve, reject) => {
     })
 })
 
-Project.getAll = (dateStart, dateFinish) => new Promise((resolve, reject) => {
+Project.get = (dateStart, dateFinish) => new Promise((resolve, reject) => {
     if (dateStart === undefined && dateFinish === undefined) {
         sql.query("SELECT * FROM projects", (err, results) => {
             if (err) return reject(err.code);
