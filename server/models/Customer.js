@@ -2,6 +2,13 @@ const sql = require("../mysql");
 
 const Customer = {};
 
+Customer.getAll = () => new Promise((resolve, reject) => {
+    sql.query("SELECT * FROM customers", (err, results) => {
+        if (err) return reject(err.code);
+        resolve(results);
+    })
+})
+
 Customer.findById = (id) => new Promise((resolve, reject) => {
     sql.query("SELECT * FROM customers WHERE id = ? LIMIT 1", [id], (err, results) => {
         if (err) return reject(err.code);
