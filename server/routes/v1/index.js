@@ -11,8 +11,10 @@ router.use("/hours", hoursRoute);
 router.use("/customers", custRoute);
 router.use("/projects", projectsRoute);
 
+router.get("/", (req, res) => res.send({ version: "1.0.0" }));
+
 router.get("*", (req, res) => {
-    res.send({ message: "Welcome to the CLEM back-end interface!", version: "1.0.0" });
+    res.send({ error: "Please specify a valid endpoint!" });
 })
 
 module.exports = router;
