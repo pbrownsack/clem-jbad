@@ -10,9 +10,14 @@ router.get("/", isAuthed, async (req, res) => {
             const custProjects = await Project.findByCustomerId(req.query.customerId);
             res.send(custProjects);
         } else {
-            if (req.query.start || req.query.end) {
-                const projects = await Project.get(req.query.start, req.query.end);
-                res.send(projects);
+            if (req.query.start || (req.query.start && req.query.end)) {
+                if (req.query.end) {
+                    const projects = await Project.get(new Date(req.query.start), new Date(req.query.end));
+                    res.send(projects);
+                } else {
+                    const projects = await Project.get(new Date(req.query.start));
+                    res.send(projects);
+                }
             } else {
                 const allProjects = await Project.get();
                 res.send(allProjects);
@@ -65,11 +70,25 @@ router.get("/:id/hours/dist", isAuthed, async (req, res) => {
 })
 
 router.post("/", isAuthed, async (req, res) => {
+    if (!req.body.name) return res.send({ error: "Invalid body parameters!" });
 
+    try {
+        const newProject = await Project.createNew(req.body);
+        res.send({ message: "Successfully created new project!" });
+    } catch (err) {
+        res.send({ error: err });
+    }
 })
 
 router.delete("/", isAuthed, isAdmin, async (req, res) => {
+    if (!req.body.id) return res.send({ error: "Invalid body parameters!" });
 
+    try {
+        const delProject = await Project.remove(req.body.id);
+        res.send({ message: "Project successfully deleted!" });
+    } catch (err) {
+        res.send({ error: err });
+    }
 })
 
 module.exports = router;
