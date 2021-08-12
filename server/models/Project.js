@@ -55,7 +55,7 @@ Project.getTotalHours = (id) => new Promise((resolve, reject) => {
     })
 })
 
-Project.getHoursByUser = (id, userId) => new Promise((resolve, reject) => {
+Project.getTotalUserHours = (id, userId) => new Promise((resolve, reject) => {
     sql.query("SELECT SUM(TIMESTAMPDIFF(HOUR, time_in, time_out)) AS total_hours FROM hours WHERE project_id = ? AND user_id = ? AND time_out IS NOT NULL", [id, userId], (err, results) => {
         if (err) return reject(err.code);
         resolve(results[0] || {});
@@ -63,7 +63,7 @@ Project.getHoursByUser = (id, userId) => new Promise((resolve, reject) => {
 })
 
 Project.getDistHours = (id) => new Promise((resolve, reject) => {
-    sql.query("SELECT hours.user_id, users.first_name, users.last_name, SUM(TIMESTAMPDIFF(HOUR, time_in, time_out)) AS total_hours FROM hours JOIN users ON hours.user_id = users.id WHERE project_id = ? AND hours.time_out IS NOT NULL GROUP BY hours.user_id, user.first_name, user.last_name", [id], (err, results) => {
+    sql.query("SELECT hours.user_id, users.first_name, users.last_name, SUM(TIMESTAMPDIFF(HOUR, hours.time_in, hours.time_out)) AS total_hours FROM hours JOIN users ON hours.user_id = users.id WHERE project_id = ? AND hours.time_out IS NOT NULL GROUP BY hours.user_id, users.first_name, users.last_name", [id], (err, results) => {
         if (err) return reject(err.code);
         resolve(results || []);
     })

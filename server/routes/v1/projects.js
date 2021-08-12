@@ -41,7 +41,8 @@ router.get("/:id", isAuthed, async (req, res) => {
 router.get("/:id/hours", isAuthed, async (req, res) => {
     try {
         if (req.query.userId) {
-            const userHours = await Project.getHoursByUser(req.params.id, req.query.userId);
+            const userHours = await Project.getTotalUserHours(req.params.id, req.query.userId);
+            res.send(userHours);
         } else {
             const allHours = await Project.getAllHours(req.params.id);
             res.send(allHours);
