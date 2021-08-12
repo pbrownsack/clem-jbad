@@ -22,15 +22,6 @@ router.post("/", async (req, res) => {
     }
 })
 
-router.get("/:userId", isAuthed, isAdmin, async (req, res) => {
-    try {
-        const idUser = await User.find(req.params.userId);
-        res.send(idUser);
-    } catch (err) {
-        res.send({ error: err });
-    }
-})
-
 router.get("/id/:id", isAuthed, isAdmin, async (req, res) => {
     try {
         const idUser = await User.findById(req.params.id);
@@ -66,6 +57,15 @@ router.post("/password/change", isAuthed, async (req, res) => {
     try {
         const results = await User.changePassword(req.body.id, req.body.new_password);
         res.send({ message: "Password changed successfully!" });
+    } catch (err) {
+        res.send({ error: err });
+    }
+})
+
+router.get("/:userId", isAuthed, isAdmin, async (req, res) => {
+    try {
+        const idUser = await User.find(req.params.userId);
+        res.send(idUser);
     } catch (err) {
         res.send({ error: err });
     }
