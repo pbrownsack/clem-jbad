@@ -41,7 +41,7 @@ router.put("/", isAuthed, isAdmin, async (req, res) => {
 })
 
 router.post("/login", passport.authenticate("local", { failureRedirect: "/v1/users/login/error" }), (req, res) => {
-    res.send({ message: "Successfully logged in!", redirect: "/hours", user: req.user });
+    res.send({ message: "Successfully logged in!", redirect: "/", user: req.user });
 })
 
 router.get("/login/error", (req, res) => {
