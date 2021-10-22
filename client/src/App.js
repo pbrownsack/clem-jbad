@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // Components
 import Navbar from './components/Navbar/Navbar';
 import PrivateRoute from './routers/PrivateRoute';
+import Container from './components/Container/Container';
+import Titlebar from './components/Titlebar/Titlebar';
 
 // Pages
 import DashboardPage from './pages/Dashboard';
@@ -13,12 +15,11 @@ const App = () => {
   return (
     <div>
       <Router>
-        <Switch>
-          <Route exact path="/login" component={LoginPage} />
-          <Route path="/" component={Navbar} />
-        </Switch>
-        <PrivateRoute exact path="/" component={DashboardPage} />
-        <PrivateRoute path ="/hours" component={HoursPage} />
+        <Route exact path="/login" component={LoginPage} />
+        <Container>
+          <PrivateRoute exact path="/" component={DashboardPage} />
+          <PrivateRoute path ="/hours" component={HoursPage} />
+        </Container>
       </Router>
     </div>
   );

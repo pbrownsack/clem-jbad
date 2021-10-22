@@ -3,68 +3,29 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
 const StyledNav = styled.nav`
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    padding: 0.8rem;
-    width: 220px;
-    height: 100vh;
-    overflow: hidden;
-    align-items: center;
-    background: #f0f0f0;
-    color: #ecf0f1;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+    background: yellow;
 
-    & > h3 {
-        font-size: 2rem;
-        font-weight: 400;
-        border-bottom: 1px solid #0f97d6;
-        letter-spacing: 2px;
-        color: #0f97d6;
+    h4 {
+        color: rgb(200, 200, 200);
     }
 
     ul {
-        margin-top: 2rem;
+        text-align: left;
         display: flex;
         flex-direction: column;
+        row-gap: 4px;
         list-style: none;
         width: 100%;
+    }
 
-        li {
-            font-size: 14px;
-            font-weight: 600;
-            background-color: #e8e8e8;
-            margin-bottom: 0.5rem;
-            transition: all 0.2s;
-            border-radius: 4px;
+    li {
+        padding: 0.4rem 0.4rem;
+        width: 100%;
+        background: green;
+        border-radius: 4px;
 
-            &:hover {
-                background-color: #0f97d6;
-                box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
-            }
-
-            a {
-                display: block;
-                padding: 0.6rem 1rem;
-                color: rgb(120, 120, 120);
-                text-decoration: none;
-                transition: color 0.1s;
-
-                &:hover {
-                    color: #fff;
-                }
-
-                &.active {
-                    background-color: #0c77a8;
-                    color: #fff;
-                }
-            }
-
-            i {
-                margin-right: 12px;
-            }
+        i {
+            margin-right: 8px;
         }
     }
 `;
@@ -72,7 +33,7 @@ const StyledNav = styled.nav`
 const Navbar = () => {
     return (
         <StyledNav>
-            <h3>C.L.E.M.</h3>
+            <h4>Navigation</h4>
             <ul>
                 <li><NavLink exact to="/" activeClassName="active"><i className="fas fa-home" />Dashboard</NavLink></li>
                 <li><NavLink to="/hours" activeClassName="active"><i className="fas fa-clock" />Hours</NavLink></li>
